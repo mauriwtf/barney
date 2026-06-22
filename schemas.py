@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,EmailStr
 
 
 
@@ -26,3 +26,24 @@ class CategoriaResponse(CategoriaBase):
 
     class config:
         orm_node= True
+
+
+
+
+#usuario
+
+
+class UsuarioBase(BaseModel):
+    nomre: str
+    email: EmailStr
+
+class UsuarioCreate(UsuarioBase):
+    password:str
+    es_admin: bool=False
+
+class UsuarioResponse(UsuarioBase):
+    id: int
+    es_admin: bool
+
+    class config:
+        orm_mode = True
