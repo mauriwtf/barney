@@ -1,7 +1,6 @@
-from database import Base
+from db.database import Base
 from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-
 class Categoria(Base):
     __tablename__ = "categorias"
 
@@ -13,21 +12,26 @@ class Categoria(Base):
         back_populates="categorias"
     )
 
-
 class Producto(Base):
     __tablename__ = "productos"
 
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, index=True)
     precio = Column(Float)
-    en_stock = Column(Boolean, default=True)
-
-    categoria_id = Column(Integer, ForeignKey("categorias.id"))
 
     categorias = relationship(
         "Categoria",
         back_populates="productos"
     )
+
+__tablename__ = "productos"
+
+id = Column(Integer, primary_key=True, index=True)
+nombre = Column(String, index=True)
+precio = Column(Float)
+en_stock = Column(Boolean, default=True)
+categoria_id = Column(Integer, ForeignKey("categorias.id"))
+categorias = relationship("Categoria", back_populates="productos")
 
 
 class Usuario(Base):
@@ -38,3 +42,4 @@ class Usuario(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     es_admin = Column(Boolean, default=False)
+

@@ -2,25 +2,33 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 import crud, schemas
-from database import get_db
+from db.database import get_db
 
 from fastapi.security import OAuth2PasswordRequestForm
 from utils import verify_password
-from auth import crear_token
+from auths import crear_token
 from deps import get_current_user, require_admin
 
 app= FastAPI()
+
+
+app.include_router(api_router, prefix="api/v1")
 
 @app.get("/productos", response_model=list[schemas.ProductoResponse])
 def listar_productos(db: Session = Depends(get_db)):
     return crud.obtener_productos(db)
 
-@app.post("/productos", response_model=schemas.ProductoCreate)
+@app.post(
+    "/productos",
+    response_model=schemas.ProductoCreate,
+    dependencies=[Depends(require_admin)]
+)
 def agregar_producto(
     producto: schemas.ProductoCreate,
     db: Session = Depends(get_db)
 ):
     return crud.crear_producto(db, producto)
+
 @app.put("/productos/{id}", response_model=schemas.ProductoCreate)
 def actualizar_producto(
     producto_id: int,
@@ -111,6 +119,7 @@ def leer_perfil(
     current_user = Depends(get_current_user)
 ):
     return current_user
+
 @app.get("/admin/ping")
 def admin_ping(
     admin = Depends(require_admin)
@@ -119,4 +128,3 @@ def admin_ping(
         "ok": True,
         "role": "admin"
     }
-
