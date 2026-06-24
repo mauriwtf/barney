@@ -1,9 +1,11 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
-
+from passlib.context import CryptContext
 from models import Producto, Categoria, Usuario
 from schemas import ProductoCreate, CategoriaCreate, UsuarioCreate
 from auths import hash_password
+
+
 
 def crear_producto(db: Session, producto: ProductoCreate):
     db_producto = Producto(**producto.dict())
