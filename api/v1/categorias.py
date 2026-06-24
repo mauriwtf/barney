@@ -3,10 +3,10 @@ from fastapi import APIRouter
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from schemas.categoria import CategoriaResponse, CategoriaCreate
+from schemas import CategoriaResponse, CategoriaCreate
 from deps.deps import get_db
 
-from crud.categoria import *
+from crud import crear_categoria, obtener_categoria
 
 api_router = APIRouter()
 
@@ -18,4 +18,4 @@ def crear_categoria(categoria: CategoriaCreate, db: Session = Depends(get_db)):
 
 @api_router.get("/", response_model=list[CategoriaResponse])
 def listar_categoria(db: Session = Depends(get_db)):
-    return obtener_categorias(db)
+    return obtener_categoria(db)

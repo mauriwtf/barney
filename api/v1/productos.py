@@ -1,10 +1,11 @@
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from schemas.producto import *
+from schemas import *
 from deps.deps import get_db
 from deps.deps import require_admin
 
-from crud.producto import *
+from crud import *
 
 api_router = APIRouter()
 

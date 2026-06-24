@@ -3,7 +3,7 @@ from sqlalchemy import or_
 
 from models import Producto, Categoria, Usuario
 from schemas import ProductoCreate, CategoriaCreate, UsuarioCreate
-from auth import hash_password
+from auths import hash_password
 
 def crear_producto(db: Session, producto: ProductoCreate):
     db_producto = Producto(**producto.dict())

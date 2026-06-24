@@ -7,12 +7,11 @@ from db.database import get_db
 from fastapi.security import OAuth2PasswordRequestForm
 from utils import verify_password
 from auths import crear_token
-from deps import get_current_user, require_admin
+from deps.deps import get_current_user, require_admin
 
 app= FastAPI()
 
 
-app.include_router(api_router, prefix="api/v1")
 
 @app.get("/productos", response_model=list[schemas.ProductoResponse])
 def listar_productos(db: Session = Depends(get_db)):
